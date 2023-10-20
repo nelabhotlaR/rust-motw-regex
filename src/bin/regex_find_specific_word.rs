@@ -2,7 +2,7 @@ use regex::Regex;
 
 fn main() {
     // Define the word you want to find
-    let word_to_find = "specific";
+    let word_to_find = "qxf2";
 
     // Create a Regex object for the word
     let re = Regex::new(&format!(r"\b{}\b", regex::escape(word_to_find)));
@@ -17,7 +17,7 @@ fn main() {
     };
 
     // The input sentence
-    let sentence = "This is a sentence with a specific word.";
+    let sentence = "This is a website of qxf2 services.";
 
     // Check if the word exists in the sentence
     if re.is_match(sentence) {

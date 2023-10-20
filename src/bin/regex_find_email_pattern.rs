@@ -13,13 +13,13 @@ fn main() {
     let re = match re {
         Ok(re) => re,
         Err(err) => {
-            eprintln!("Test self generated error: {}", err);
+            eprintln!("Check Rust generated error: {}", err);
             return;
         }
     };
 
     // The input text containing email addresses
-    let text = "Contact us at mak@qxf2.com or raghava.nelbo@qxf2.com for assistance.";
+    let text = "Contact us at mak@qxf2.com or support@qxf2.com for assistance.";
 
     // Find all matches in the text
     let matches: Vec<&str> = re.find_iter(text)
