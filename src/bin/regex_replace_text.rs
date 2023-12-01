@@ -1,49 +1,48 @@
-// replace_all: all occurrences of a regex pattern in a string with a specified 
-// replacement text.
-// the below example takes input from the user and replaces with speicified word.
 use regex::Regex;
-use std::io;
+use std::io::{self, Write};
 
-fn main() {
-    // Prompt user for input
-    println!("Enter a sentence:");
-    let mut sentence = String::new();
-    io::stdin().read_line(&mut sentence).expect("Failed to read line");
-
-    println!("Enter the word to replace:");
-    let mut word_to_replace = String::new();
-    io::stdin().read_line(&mut word_to_replace).expect("Failed to read line");
-
-    println!("Enter the replacement word:");
-    let mut replacement_word = String::new();
-    io::stdin().read_line(&mut replacement_word).expect("Failed to read line");
-
-    // Trim leading and trailing whitespace
-    let sentence = sentence.trim();
-    let word_to_replace = word_to_replace.trim();
-    let replacement_word = replacement_word.trim();
-
-    // Validate input
-    if sentence.is_empty() || word_to_replace.is_empty() || replacement_word.is_empty() {
-        println!("Error: Input cannot be empty.");
-        return;
-    }
-
+fn replace_text(sentence: &str, word_to_replace: &str, replacement_word: &str) -> Result<String, regex::Error> {
     // Create a Regex object for the word to be replaced
-    let re = Regex::new(&format!(r"\b{}\b", regex::escape(word_to_replace)));
-
-    // Check if the regex compilation was successful
-    let re = match re {
-        Ok(re) => re,
-        Err(err) => {
-            eprintln!("Error: {}", err);
-            return;
-        }
-    };
+    let re = Regex::new(&format!(r"\b{}\b", regex::escape(word_to_replace)))?;
 
     // Replace all occurrences of the word
-    let replaced_sentence = re.replace_all(sentence, replacement_word);
+    let replaced_sentence = re.replace_all(sentence, replacement_word).to_string();
+    Ok(replaced_sentence)
+}
 
-    // Print the modified sentence
-    println!("{}", replaced_sentence);
+fn input_values() -> Result<(String, String, String), io::Error> {
+    let mut sentence = String::new();
+    let mut word_to_replace = String::new();
+    let mut replacement_word = String::new();
+
+    print!("Enter a sentence: ");
+    io::stdout().flush()?;
+    io::stdin().read_line(&mut sentence)?;
+
+    print!("Enter the word to replace: ");
+    io::stdout().flush()?;
+    io::stdin().read_line(&mut word_to_replace)?;
+
+    print!("Enter the replacement word: ");
+    io::stdout().flush()?;
+    io::stdin().read_line(&mut replacement_word)?;
+
+    Ok((
+        sentence.trim().to_string(),
+        word_to_replace.trim().to_string(),
+        replacement_word.trim().to_string(),
+    ))
+}
+fn main() {
+    match input_values() {
+        Ok((sentence, word_to_replace, replacement_word)) => {
+            match replace_text(&sentence, &word_to_replace, &replacement_word) {
+                Ok(replaced_sentence) => {
+                    println!("Modified sentence: {}", replaced_sentence);
+                }
+                Err(err) => eprintln!("Error replacing text: {}", err),
+            }
+        }
+        Err(err) => eprintln!("Error getting input: {}", err),
+    }
 }
