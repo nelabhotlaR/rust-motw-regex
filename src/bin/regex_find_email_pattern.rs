@@ -2,32 +2,42 @@
 
 use regex::Regex;
 
-fn main() {
-    // Define an valid regex pattern for email address
-    let pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b";
+fn search_email_pattern_from_sentence(text: &str) -> Option<Vec<String>> {
+    let mut emails = Vec::new(); // Store the found email addresses
+
+    // Define a valid regex pattern for email address
+    let pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b";
 
     // Create a Regex object
-    let re = Regex::new(pattern);
-
-    // Check if the regex compilation was successful
-    let re = match re {
+    let re = match Regex::new(pattern) {
         Ok(re) => re,
         Err(err) => {
-            eprintln!("Check Rust generated error: {}", err);
-            return;
+            eprintln!("Error: {}", err);
+            return None; // Return None on error
         }
     };
 
-    // The input text containing email addresses
+    // Find all matches in the text
+    for mat in re.find_iter(text) {
+        emails.push(mat.as_str().to_string()); // Store the found email addresses
+    }
+
+    if emails.is_empty() {
+        None // Return None if no emails are found
+    } else {
+        Some(emails) // Return the found email addresses
+    }
+}
+
+fn main() {
     let text = "Contact us at mak@qxf2.com or support@qxf2.com for assistance.";
 
-    // Find all matches in the text
-    let matches: Vec<&str> = re.find_iter(text)
-                                .map(|mat| mat.as_str())
-                                .collect();
-
-    // Print the matches
-    for email in matches {
-        println!("{}", email);
+    if let Some(emails) = search_email_pattern_from_sentence(text) {
+        // Print the matches
+        for email in emails {
+            println!("{}", email);
+        }
+    } else {
+        println!("No email addresses found in the text.");
     }
 }
