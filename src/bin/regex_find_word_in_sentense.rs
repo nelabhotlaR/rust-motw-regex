@@ -7,13 +7,29 @@ use std::io;
 
 fn main() {
     // Prompt user for input
-    println!("Enter a sentence:");
     let mut sentence = String::new();
-    io::stdin().read_line(&mut sentence).expect("Failed to read line");
+    println!("Input Sentence: ");
+    match io::stdin().read_line(&mut sentence) {
+        Ok(_) => {
+            println!("Sentence: {}", sentence);
+        }
+        Err(error) => {
+            eprintln!("Failed to read line: {}", error);
+            return;
+        }
+    }
 
-    println!("Enter the word to search for:");
     let mut search_word = String::new();
-    io::stdin().read_line(&mut search_word).expect("Failed to read line");
+    println!("Enter Search word from the input sentence: ");
+    match io::stdin().read_line(&mut search_word) {
+        Ok(_) => {
+            println!("Search Word: {}", search_word);
+        }
+        Err(error) => {
+            eprintln!("Failed to read line: {}", error);
+            return;
+        }
+    }
 
     // Trim leading and trailing whitespace
     let sentence = sentence.trim();
@@ -48,7 +64,7 @@ fn find_word_in_sentense(sentence: &str, search_word: &str)  {
 
         println!("Found '{}' at positions {}-{}", matched_text, start, end);
     } else {
-        println!("Pattern not found in the sentence.");
+        println!("Word not found in the provided sentence. ");
     }
 
 }

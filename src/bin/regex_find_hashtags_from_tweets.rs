@@ -40,6 +40,7 @@ fn main() {
         "We wrote a GitHub action to deply #rust code to AWS lambda.",
         "Excited to learn about #regex in #Rust!",
         "Check out how to use Py03 and maturin to call Rust libraries from Python #maturin #Rust #Py03",
+        "#Java we did not use much as we mainly uses ##Python",
     ];
 
     let extracted_data = extract_hashtag_from_tweets(tweets);

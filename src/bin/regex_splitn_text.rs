@@ -29,7 +29,10 @@
     
     fn split_text(product_description: &str) -> Result<Vec<&str>, regex::Error> {
         let pattern = r"\|"; // Assuming "|" is the delimiter
-        let re = Regex::new(pattern)?;
+        let re = match Regex::new(pattern) {
+            Ok(re) => re,
+            Err(e) => return Err(e),
+        };
     
         let parts: Vec<&str> = re.splitn(product_description, 3).collect();
         Ok(parts)

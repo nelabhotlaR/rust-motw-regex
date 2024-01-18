@@ -1,3 +1,7 @@
+/*
+The below code uses Regex:replace_all() method.
+The program prompts user to enter sentence, then word to replace and replacement word
+ */
 use regex::Regex;
 use std::io::{self, Write};
 
@@ -16,15 +20,15 @@ fn input_values() -> Result<(String, String, String), io::Error> {
     let mut replacement_word = String::new();
 
     print!("Enter a sentence: ");
-    io::stdout().flush()?;
+    io::stdout().flush().map_err(|err| io::Error::new(err.kind(), "Failed to flush stdout"))?;
     io::stdin().read_line(&mut sentence)?;
 
     print!("Enter the word to replace: ");
-    io::stdout().flush()?;
+    io::stdout().flush().map_err(|err| io::Error::new(err.kind(), "Failed to flush stdout"))?;
     io::stdin().read_line(&mut word_to_replace)?;
 
     print!("Enter the replacement word: ");
-    io::stdout().flush()?;
+    io::stdout().flush().map_err(|err| io::Error::new(err.kind(), "Failed to flush stdout"))?;
     io::stdin().read_line(&mut replacement_word)?;
 
     Ok((
@@ -33,6 +37,7 @@ fn input_values() -> Result<(String, String, String), io::Error> {
         replacement_word.trim().to_string(),
     ))
 }
+
 fn main() {
     match input_values() {
         Ok((sentence, word_to_replace, replacement_word)) => {

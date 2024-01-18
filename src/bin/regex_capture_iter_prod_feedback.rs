@@ -9,7 +9,13 @@ fn capture_info_from_feedbacks(feedbacks: Vec<&str>) -> Vec<(String, String, Str
 
     // Define a regex pattern to capture product, sentiment, and issues
     let pattern = r"Product: (\w+), Sentiment: (\w+), Issues: (.+)";
-    let re = Regex::new(pattern).expect("Invalid regex pattern");
+    let re = match Regex::new(pattern) {
+        Ok(re) => re,
+        Err(_) => {
+            eprintln!("Invalid regex pattern");
+            return captured_info;
+        }
+    };
 
     // Extract information using captures_iter
     for feedback_email in feedbacks {

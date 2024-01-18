@@ -30,7 +30,7 @@ fn search_email_pattern_from_sentence(text: &str) -> Option<Vec<String>> {
 }
 
 fn main() {
-    let text = "Contact us at mak@qxf2.com or support@qxf2.com for assistance.";
+    let text = "Contact us at mak@qxf2.com or support@qxf2.com or invalid.com for assistance.";
 
     if let Some(emails) = search_email_pattern_from_sentence(text) {
         // Print the matches
