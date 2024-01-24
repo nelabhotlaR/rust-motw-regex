@@ -1,7 +1,8 @@
-// find(): searches for the first occurrence of a regex pattern in a string, 
-// returning an optional match.
-// The below takes input and search word from user and prints the 
-// position for the search word
+/* find(): searches for the first occurrence of a regex pattern in a string.
+The below takes input sentence and search word from the user and prints the 
+position for the search word.
+*/
+
 use regex::Regex;
 use std::io;
 

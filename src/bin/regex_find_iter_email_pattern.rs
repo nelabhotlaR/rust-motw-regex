@@ -1,4 +1,7 @@
-// In the provided text the script searchs for email address pattern
+/*
+The below code uses find_iter() method.
+In the provided text the script searchs for email address pattern
+*/
 
 use regex::Regex;
 

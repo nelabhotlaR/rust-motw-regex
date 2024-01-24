@@ -1,6 +1,7 @@
-// splitn(): splits a string based on a regex pattern.
-    // The below example uses splitn to extract key details 
-    // like product name, price, and description. 
+/* 
+The below example uses splitn method.
+The below example uses splitn to extract key details like product name, price, and description. 
+*/ 
     use regex::Regex;
 
     fn main() {
