@@ -3,10 +3,12 @@ The below example uses splitn method.
 The below example uses splitn to extract key details like product name, price, and description. 
 */ 
     use regex::Regex;
+    use ansi_term::Colour::{Red, Blue};
 
     fn main() {
         let product_description = "Widget | $29.99 | A high-quality widget for your needs.";
-    
+        println!("The Product Description: {}", Red.paint(product_description));
+        println!("{}", Blue.paint("================The Split:Product/Price/Desc==================================="));
         match split_text(&product_description) {
             Ok(parts) => {
                 if parts.len() >= 3 {

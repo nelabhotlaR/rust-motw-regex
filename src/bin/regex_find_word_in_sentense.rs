@@ -3,7 +3,7 @@ The below takes input sentence and search word from the user and prints the
 position for the search word.
 */
 
-use regex::Regex;
+use regex::RegexBuilder;
 use std::io;
 
 fn main() {
@@ -46,10 +46,13 @@ fn main() {
 
 fn find_word_in_sentense(sentence: &str, search_word: &str)  {
     // Create a Regex object for the pattern
-    let re = Regex::new(search_word);
+    //let re = Regex::new(search_word);
+    //let regex_builder = RegexBuilder::new(search_word).case_insensitive(true);
+    let mut binding = RegexBuilder::new(search_word);
+    let regex_builder = binding.case_insensitive(true);
 
     // Check if the regex compilation was successful
-    let re = match re {
+    let re = match regex_builder.build() {
         Ok(re) => re,
         Err(err) => {
             eprintln!("Error: {}", err);
