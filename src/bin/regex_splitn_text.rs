@@ -1,6 +1,7 @@
 /* 
 The below example uses splitn method.
 The below example uses splitn to extract key details like product name, price, and description. 
+Used ansi_term crate - This Crate is a library for colours and formatting
 */ 
     use regex::Regex;
     use ansi_term::Colour::{Red, Blue};

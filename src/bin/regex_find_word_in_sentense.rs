@@ -1,6 +1,7 @@
 /* find(): searches for the first occurrence of a regex pattern in a string.
 The below takes input sentence and search word from the user and prints the 
 position for the search word.
+To handle case insensitive used RegexBuilder
 */
 
 use regex::RegexBuilder;
