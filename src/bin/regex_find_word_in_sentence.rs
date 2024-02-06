@@ -5,6 +5,7 @@ To handle case insensitive used RegexBuilder
 */
 use regex::RegexBuilder;
 use std::io;
+use ansi_term::Colour::{Red, Green};
 
 fn find_word_in_sentence(sentence: &str, search_word: &str) -> Result<String, regex::Error> {
     // Create a Regex object for the pattern
@@ -19,7 +20,7 @@ fn find_word_in_sentence(sentence: &str, search_word: &str) -> Result<String, re
             return Err(err);
         }
     };
-
+    
     // Search for the pattern in the sentence
     if let Some(mat) = re.find(sentence) {
         let matched_text = mat.as_str();
@@ -45,7 +46,7 @@ fn prompt_user_input(prompt: &str) -> String {
         }
     }
 }
-
+// Program starting point
 fn main() {
     let sentence = prompt_user_input("Input Sentence:");
     println!("Sentence: {}", sentence);
@@ -55,12 +56,12 @@ fn main() {
 
     // Validate input
     if sentence.is_empty() || search_word.is_empty() {
-        println!("Error: Input cannot be empty.");
+        println!("{}",Red.paint("Error: Input cannot be empty."));
         return;
     }
     match find_word_in_sentence(&sentence, &search_word) {
         Ok(word_position) => {
-            println!("{}", word_position);
+            println!("{}", Green.paint(word_position));
         }
         Err(err) => println!("Error: {}", err),
     }
