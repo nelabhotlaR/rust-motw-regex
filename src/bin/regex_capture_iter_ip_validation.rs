@@ -1,3 +1,10 @@
+/*
+captures_iter: allows you to iterate over multiple captures of a 
+regular expression pattern in a text.
+The below example captures the valid IP address from the provided 
+text and prints it.
+*/
+
 use regex::Regex;
 
 fn validate_ips(texts: Vec<&str>) -> Vec<String> {
@@ -28,7 +35,7 @@ fn validate_ips(texts: Vec<&str>) -> Vec<String> {
         }
 
         if !text_has_valid_ip {
-            println!("No valid IP address found in the text: '{}'", text);
+            println!("No valid IP address found in the text: '{}'\n", text);
         }
     }
 
@@ -39,6 +46,7 @@ fn validate_ips(texts: Vec<&str>) -> Vec<String> {
     valid_ips
 }
 
+#[allow(unused_comparisons)]
 fn is_valid_ip(ip: &str) -> bool {
     let octets: Vec<&str> = ip.split('.').collect();
 
@@ -46,10 +54,10 @@ fn is_valid_ip(ip: &str) -> bool {
         println!("Invalid IP: {} (Wrong number of octets)", ip);
         return false;
     }
-
+    
     for octet in &octets {
         if let Ok(num) = octet.parse::<u8>() {
-            if num > 255 {
+            if num > 255_u8 {
                 println!("Invalid IP: {} (Octet value out of range: {})", ip, octet);
                 return false;
             }

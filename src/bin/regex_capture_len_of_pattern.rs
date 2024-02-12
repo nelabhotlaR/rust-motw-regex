@@ -1,8 +1,10 @@
-// captures_len: returns the number of capturing groups in a regular expression pattern. 
-// The below program uses capture len to get the count to verify the structure of 
-// captured data and ensure it matches the expected format.
-use regex::Regex;
+/* 
+captures_len: returns the number of capturing groups in a regular expression pattern. 
+The below program uses capture len to get the count to verify the structure of 
+captured data and ensure it matches the expected format.
+ */
 
+use regex::Regex;
 fn capture_info_from_log_entry(log_entries: Vec<&str>) -> Vec<Result<(String, String, String), &'static str>> {
     // Define a regex pattern to capture timestamp, log level, and message
     let pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[([A-Z,a-z]+)\] (.+)";

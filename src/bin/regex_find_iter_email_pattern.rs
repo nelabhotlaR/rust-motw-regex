@@ -4,20 +4,18 @@ In the provided text the script searchs for email address pattern
 */
 
 use regex::Regex;
+use std::error::Error;
 
-fn search_email_pattern_from_sentence(text: &str) -> Option<Vec<String>> {
+fn search_email_pattern_from_sentence(text: &str) -> Result<Vec<String>, Box<dyn Error>> {
     let mut emails = Vec::new(); // Store the found email addresses
 
     // Define a valid regex pattern for email address
     let pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b";
 
     // Create a Regex object
-    let re = match Regex::new(pattern) {
+      let re = match Regex::new(pattern) {
         Ok(re) => re,
-        Err(err) => {
-            eprintln!("Error: {}", err);
-            return None; // Return None on error
-        }
+        Err(err) => return Err(err.into()), // Convert the regex error to Box<dyn Error>
     };
 
     // Find all matches in the text
@@ -26,23 +24,26 @@ fn search_email_pattern_from_sentence(text: &str) -> Option<Vec<String>> {
     }
 
     if emails.is_empty() {
-        None // Return None if no emails are found
-    } else {
-        Some(emails) // Return the found email addresses
+        return Err("No email addresses found in the text.".into()); // Return an error if no emails are found
     }
+
+    Ok(emails) // Return the found email addresses
 }
 
 fn main() {
     let text = "Contact us at mak@qxf2.com or support@qxf2.com or invalid.com for assistance.";
     println!("The text: {} ", text);
 
-    if let Some(emails) = search_email_pattern_from_sentence(text) {
-        // Print the matches
-        println!("====================Email from text==============");
-        for email in emails {
-            println!("{}", email);
+    match search_email_pattern_from_sentence(text) {
+        Ok(emails) => {
+            // Print the matches
+            println!("====================Email from text=============================");
+            for email in emails {
+                println!("{}", email);
+            }
         }
-    } else {
-        println!("No email addresses found in the text.");
+        Err(err) => {
+            println!("{}", err);
+        }
     }
 }
