@@ -5,12 +5,13 @@ captured data and ensure it matches the expected format.
  */
 
 use regex::Regex;
-fn capture_info_from_log_entry(log_entries: Vec<&str>) -> Vec<Result<(String, String, String), &'static str>> {
+
+fn capture_info_from_log_entry(log_entries: Vec<&str>) -> Vec<Result<(String, String, String), String>> {
     // Define a regex pattern to capture timestamp, log level, and message
     let pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] \[([A-Z,a-z]+)\] (.+)";
     let re = match Regex::new(pattern) {
         Ok(re) => re,
-        Err(_) => return vec![Err("Invalid regex pattern"); log_entries.len()],
+        Err(_) => return vec![Err("Invalid regex pattern".to_string()); log_entries.len()],
     };
 
     log_entries
@@ -21,16 +22,21 @@ fn capture_info_from_log_entry(log_entries: Vec<&str>) -> Vec<Result<(String, St
             match captures_len {
                 4 => {
                     if let Some(captures) = re.captures(log_entry) {
-                        let timestamp = captures.get(1).map(|m| m.as_str().to_string()).ok_or("Incomplete match found");
-                        let log_level = captures.get(2).map(|m| m.as_str().to_string()).ok_or("Incomplete match found");
-                        let message = captures.get(3).map(|m| m.as_str().to_string()).ok_or("Incomplete match found");
-
-                        Ok((timestamp?, log_level?, message?))
+                        let timestamp = captures.get(1).map(|m| m.as_str().to_string());
+                        let log_level = captures.get(2).map(|m| m.as_str().to_string());
+                        let message = captures.get(3).map(|m| m.as_str().to_string());
+        
+                        match (timestamp, log_level, message) {
+                            (Some(timestamp), Some(log_level), Some(message)) => {
+                                Ok((timestamp, log_level, message))
+                            },
+                            _ => Err("No match found".to_string())
+                        }
                     } else {
-                        Err("No match found, Expected 3 capture groups")
+                        Err("Expected 3 capture groups".to_string())
                     }
                 },
-                _ => Err("Invalid regex pattern. Expected 3 capture groups."),
+                _ => Err("Invalid regex pattern. Expected 3 capture groups.".to_string()),
             }
         })
         .collect()
@@ -42,7 +48,9 @@ fn main() {
         "[2023-10-31 15:23:45] [ERROR] *370 connect() failed (111: Unknown error) while connecting to upstream, client: 135.125.246.189, server: _, request: \"GET /.env HTTP/1.1\", upstream: \"http://127.0.0.1:5000/.env\", host: \"18.118.196.200\"",
         "[2023-10-31 15:30:00] [INFO] Application started successfully",
         "[2023-10-31 15:40:22] [WARNING] Unrecognized log entry format",
-        "[2023-01-01 00:00:00] [info] "
+        "[2023-01-01 00:00:00] [info] ",
+        " [error] some text",
+        " hi"
         // Add more log entries for testing
     ];
 

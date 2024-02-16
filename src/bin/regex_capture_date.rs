@@ -14,7 +14,10 @@ fn is_leap_year(year: u32) -> bool {
 fn validate_date(date: &str) -> Result<String, Box<dyn Error>> {
     // Declaring the pattern and validating the pattern
     let pattern = r"(\d{1,2})/(\d{1,2})/(\d{4})"; // Pattern to match dates
-    let re = Regex::new(pattern)?;
+    let re = match Regex::new(pattern) {
+        Ok(re) => re,
+        Err(_) => return Err("Invalid regex pattern".into()),
+    };
 
     if let Some(captures) = re.captures(date) {
         if let (Some(day), Some(month), Some(year)) = (
@@ -45,7 +48,7 @@ fn validate_date(date: &str) -> Result<String, Box<dyn Error>> {
 
 fn main() {
     // Change the date to check different date validations. Valid pattern dd/mm/yyyy or d/m/yyyy
-    let date = "28/15/2025";
+    let date = "29/02/2025";
     match validate_date(date) {
         Ok(validated_date) => println!("{}", validated_date),
         Err(err) => println!("Error: {} \nDate: {}", err,date),
