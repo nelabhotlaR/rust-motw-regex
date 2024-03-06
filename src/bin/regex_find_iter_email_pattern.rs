@@ -5,6 +5,7 @@ In the provided text the script searchs for email address pattern
 
 use regex::Regex;
 use std::error::Error;
+use ansi_term::Colour::{Green};
 
 fn search_email_pattern_from_sentence(text: &str) -> Result<Vec<String>, Box<dyn Error>> {
     let mut emails = Vec::new(); // Store the found email addresses
@@ -39,7 +40,7 @@ fn main() {
             // Print the matches
             println!("====================Email from text=============================");
             for email in emails {
-                println!("{}", email);
+                println!("{}", Green.paint(email));
             }
         }
         Err(err) => {

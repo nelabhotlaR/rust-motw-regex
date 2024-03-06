@@ -4,6 +4,7 @@ The program prompts user to enter sentence, then word to replace and replacement
  */
 use regex::Regex;
 use std::io;
+use ansi_term::Colour::{Red, Blue, Green, Yellow};
 
 fn prompt_user_input(prompt: &str) -> String {
     println!("{}", prompt);
@@ -32,17 +33,17 @@ fn replace_text(sentence: &str, word_to_replace: &str, replacement_word: &str) -
 // Program starting point
 fn main() {
     let sentence = prompt_user_input("Enter a Sentence:");
-    println!("Sentence: {}", sentence);
+    println!("Sentence: {}", Blue.bold().paint(&sentence));
 
     let word_to_replace = prompt_user_input("Enter the word to replace:");
-    println!("word to replace: {}", word_to_replace);
+    println!("word to replace: {}", Red.bold().paint(&word_to_replace));
 
     let replacement_word = prompt_user_input("Enter the replacement word:");
-    println!("Enter replacement word: {}", replacement_word);
+    println!("Enter replacement word: {}", Green.bold().paint(&replacement_word));
     
     match replace_text(&sentence, &word_to_replace, &replacement_word) {
         Ok(replaced_sentence) => {
-            println!("Modified sentence: {}", replaced_sentence);
+            println!("Modified sentence: {}", Yellow.bold().paint(&replaced_sentence));
         }
         Err(err) => eprintln!("Error replacing text: {}", err),
     }

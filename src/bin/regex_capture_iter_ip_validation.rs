@@ -56,7 +56,7 @@ fn is_valid_ip(ip: &str) -> bool {
 
     for octet in &octets {
         match octet.parse::<u8>() {
-            Ok(num) => {
+            Ok(_num) => {
                 // Your code when parsing succeeds
                 {}
             },
